@@ -54,6 +54,20 @@ func ExampleVector_Sub() {
 	// Output: [1 2]
 }
 
+func ExampleEqual() {
+	fmt.Println(
+		vec{1, 2}.Equal(vec{1, 2}),
+	)
+	// Output: true
+}
+
+func ExampleVector_Equal() {
+	fmt.Println(
+		vec{2, 1}.Equal(vec{1, 2}),
+	)
+	// Output: false
+}
+
 func ExampleDot() {
 	result := vector.Dot(vec{0, 2}, vec{2, 0})
 	fmt.Println(result)
@@ -67,15 +81,54 @@ func ExampleVector_Dot() {
 }
 
 func ExampleCross() {
-	result := vector.Cross(vec{0, 1, 2}, vec{3, 2, 1})
-	fmt.Println(result)
-	// Output: [-3 6 -6]
+	result, err := vector.Cross(vec{0, 1, 2}, vec{3, 2, 1})
+	fmt.Println(result, err)
+	// Output: [-3 6 -6] <nil>
 }
 
 func ExampleVector_Cross() {
 	v1, v2 := vec{0, 1, 2}, vec{3, 2, 1}
 	fmt.Println(v1.Cross(v2))
-	// Output: [-3 6 -6]
+	// Output: [-3 6 -6] <nil>
+}
+
+func ExampleClone() {
+	vc := vector.Clone(vec{1, 2})
+	fmt.Println(vc)
+	// Output: [1 2]
+}
+
+func ExampleVector_Clone() {
+	fmt.Println(
+		vec{1, 2}.Clone(),
+	)
+	// Output: [1 2]
+}
+
+func ExampleScale() {
+	v := vector.Scale(vec{1, 2}, 2)
+	fmt.Println(v)
+	// Output: [2 4]
+}
+
+func ExampleVector_Scale() {
+	fmt.Println(
+		vec{1, 2}.Scale(2),
+	)
+	// Output: [2 4]
+}
+
+func ExampleMagnitude() {
+	l := vector.Magnitude(vec{1, 2})
+	fmt.Println(l)
+	// Output: 2.23606797749979
+}
+
+func ExampleVector_Magnitude() {
+	fmt.Println(
+		vec{1, 2}.Magnitude(),
+	)
+	// Output: 2.23606797749979
 }
 
 func BenchmarkAdd(b *testing.B) {

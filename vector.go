@@ -9,70 +9,82 @@ import (
 // 64 bit floats
 type Vector []float64
 
+// axis is an integer enum type that describes vector axis
 type axis int
 
 const (
+	// the consts below are used to represent vector axis, they are useful
+	// to lookup values within the vector.
 	x axis = iota
 	y
 	z
 )
 
 var (
+	// ErrNot3Dimensional is an error that is returned in functions that only
+	// supports operations on 3 dimensional vectors
 	ErrNot3Dimensional = errors.New("vector is not 3 dimensional")
 )
 
+// Clone a vector
 func Clone(v Vector) Vector {
 	clone := make(Vector, len(v))
 	copy(clone, v)
 	return clone
 }
 
+// Clone a vector
 func (v Vector) Clone() Vector {
 	return Clone(v)
 }
 
+// Add a vector with a vector or a set of vectors
 func Add(v1 Vector, vs ...Vector) Vector {
 	return v1.Clone().Add(vs...)
 }
 
-func (v1 Vector) Add(vs ...Vector) Vector {
-	dimensions := len(v1)
+// Add a vector with a vector or a set of vectors
+func (v Vector) Add(vs ...Vector) Vector {
+	dimensions := len(v)
 
-	for _, v := range vs {
-		for i := range v {
+	for _, vn := range vs {
+		for i := range vn {
 			if i >= dimensions {
-				ed := len(v) - dimensions
-				v1 = append(v1, make(Vector, ed)...)
+				ed := len(vn) - dimensions
+				v = append(v, make(Vector, ed)...)
 				dimensions += ed
 			}
-			v1[i] += v[i]
+			v[i] += vn[i]
 		}
 	}
 
-	return v1
+	return v
 }
 
+// Sub subtracts a vector with another vector or a set of vectors
 func Sub(v1 Vector, vs ...Vector) Vector {
 	return v1.Clone().Sub(vs...)
 }
 
-func (v1 Vector) Sub(vs ...Vector) Vector {
-	dimensions := len(v1)
+// Sub subtracts a vector with another vector or a set of vectors
+func (v Vector) Sub(vs ...Vector) Vector {
+	dimensions := len(v)
 
-	for _, v := range vs {
-		for i := range v {
+	for _, vn := range vs {
+		for i := range vn {
 			if i >= dimensions {
-				ed := len(v) - dimensions
-				v1 = append(v1, make(Vector, ed)...)
+				ed := len(vn) - dimensions
+				v = append(v, make(Vector, ed)...)
 				dimensions += ed
 			}
-			v1[i] -= v[i]
+			v[i] -= vn[i]
 		}
 	}
 
-	return v1
+	return v
 }
 
+// Scale vector with a given size
 func Scale(v Vector, size float64) Vector {
 	result := v.Clone()
 
@@ -83,11 +95,13 @@ func Scale(v Vector, size float64) Vector {
 	return result
 }
 
+// Scale vector with a given size
 func (v Vector) Scale(size float64) Vector {
 	return Scale(v, size)
 }
 
-func Equals(v1, v2 Vector) bool {
+// Equal compares that two vectors are equal to each other
+func Equal(v1, v2 Vector) bool {
 	if len(v1) != len(v2) {
 		return false
 	}
@@ -101,10 +115,12 @@ func Equals(v1, v2 Vector) bool {
 	return true
 }
 
-func (v1 Vector) Equals(v2 Vector) bool {
-	return Equals(v1, v2)
+// Equal compares that two vectors are equal to each other
+func (v Vector) Equal(v2 Vector) bool {
+	return Equal(v, v2)
 }
 
+// Magnitude of a vector
 func Magnitude(v Vector) float64 {
 	var result float64
 
@@ -115,10 +131,12 @@ func Magnitude(v Vector) float64 {
 	return math.Sqrt(result)
 }
 
+// Magnitude of a vector
 func (v Vector) Magnitude() float64 {
 	return Magnitude(v)
 }
 
+// Dot product of two vectors
 func Dot(v1, v2 Vector) float64 {
 	var result float64
 
@@ -137,22 +155,25 @@ func Dot(v1, v2 Vector) float64 {
 	return result
 }
 
-func (v1 Vector) Dot(v2 Vector) float64 {
-	return Dot(v1, v2)
+// Dot product of two vectors
+func (v Vector) Dot(v2 Vector) float64 {
+	return Dot(v, v2)
 }
 
-func Cross(v1, v2 Vector) Vector {
+// Cross product of two vectors
+func Cross(v1, v2 Vector) (Vector, error) {
 	if len(v1) != 3 || len(v2) != 3 {
-		panic(ErrNot3Dimensional)
+		return Vector{}, ErrNot3Dimensional
 	}
 
 	return Vector{
 		v1[y]*v2[z] - v1[z]*v2[y],
 		v1[z]*v2[x] - v1[x]*v2[z],
 		v1[x]*v2[z] - v1[z]*v2[x],
-	}
+	}, nil
 }
 
-func (v1 Vector) Cross(v2 Vector) Vector {
-	return Cross(v1, v2)
+// Cross product of two vectors
+func (v Vector) Cross(v2 Vector) (Vector, error) {
+	return Cross(v, v2)
 }
