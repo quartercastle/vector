@@ -86,18 +86,16 @@ func (v Vector) Sub(vs ...Vector) Vector {
 
 // Scale vector with a given size
 func Scale(v Vector, size float64) Vector {
-	result := v.Clone()
-
-	for i := range v {
-		result[i] *= size
-	}
-
-	return result
+	return v.Clone().Scale(2)
 }
 
 // Scale vector with a given size
 func (v Vector) Scale(size float64) Vector {
-	return Scale(v, size)
+	for i := range v {
+		v[i] *= size
+	}
+
+	return v
 }
 
 // Equal compares that two vectors are equal to each other

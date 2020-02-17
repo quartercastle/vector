@@ -138,3 +138,91 @@ func BenchmarkAdd(b *testing.B) {
 		vector.Add(v1, v2)
 	}
 }
+
+func BenchmarkVector_Add(b *testing.B) {
+	v1, v2 := vec{1, 2}, vec{2, 3}
+
+	for i := 0; i < b.N; i++ {
+		v1.Add(v2)
+	}
+}
+
+func BenchmarkSub(b *testing.B) {
+	v1, v2 := vec{1, 2}, vec{2, 3}
+
+	for i := 0; i < b.N; i++ {
+		vector.Sub(v2, v1)
+	}
+}
+
+func BenchmarkVector_Sub(b *testing.B) {
+	v1, v2 := vec{1, 2}, vec{2, 3}
+
+	for i := 0; i < b.N; i++ {
+		v2.Sub(v1)
+	}
+}
+
+func BenchmarkClone(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		vector.Clone(v)
+	}
+}
+
+func BenchmarkVector_Clone(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		v.Clone()
+	}
+}
+
+func BenchmarkScale(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		vector.Scale(v, 2)
+	}
+}
+
+func BenchmarkVector_Scale(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		v.Scale(2)
+	}
+}
+
+func BenchmarkEqual(b *testing.B) {
+	v1, v2 := vec{1, 2}, vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		vector.Equal(v1, v2)
+	}
+}
+
+func BenchmarkMagnitude(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		vector.Magnitude(v)
+	}
+}
+
+func BenchmarkDot(b *testing.B) {
+	v1, v2 := vec{1, 2}, vec{2, 1}
+
+	for i := 0; i < b.N; i++ {
+		vector.Dot(v1, v2)
+	}
+}
+
+func BenchmarkCross(b *testing.B) {
+	v1, v2 := vec{1, 2, 3}, vec{3, 2, 1}
+
+	for i := 0; i < b.N; i++ {
+		vector.Cross(v1, v2)
+	}
+}
