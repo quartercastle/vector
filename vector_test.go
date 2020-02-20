@@ -35,13 +35,19 @@ func Example() {
 	// Create a vector from a list of float64
 	v2 := vec([]float64{1, 2, 4})
 
-	fmt.Println(v1.Add(v2))
-	// Output: [5 4 4]
+	// Slice vector
+	v3 := v2[1:]
+
+	fmt.Println(
+		v1.Add(v2, v3),
+	)
+	// Output: [7 8 4]
 }
 
 func ExampleAdd() {
-	result := vector.Add(vec{0, 2}, vec{1, 4})
-	fmt.Println(result)
+	fmt.Println(
+		vector.Add(vec{0, 2}, vec{1, 4}),
+	)
 	// Output: [1 6]
 }
 
@@ -53,8 +59,9 @@ func ExampleVector_Add() {
 }
 
 func ExampleSub() {
-	result := vector.Sub(vec{1, 4}, vec{0, 2})
-	fmt.Println(result)
+	fmt.Println(
+		vector.Sub(vec{1, 4}, vec{0, 2}),
+	)
 	// Output: [1 2]
 }
 
@@ -80,32 +87,37 @@ func ExampleVector_Equal() {
 }
 
 func ExampleDot() {
-	result := vector.Dot(vec{0, 2}, vec{2, 0})
-	fmt.Println(result)
+	fmt.Println(
+		vector.Dot(vec{0, 2}, vec{2, 0}),
+	)
 	// Output: 0
 }
 
 func ExampleVector_Dot() {
-	v1, v2 := vec{0, 2}, vec{2, 0}
-	fmt.Println(v1.Dot(v2))
+	fmt.Println(
+		vec{0, 2}.Dot(vec{2, 0}),
+	)
 	// Output: 0
 }
 
 func ExampleCross() {
-	result, err := vector.Cross(vec{0, 1, 2}, vec{3, 2, 1})
-	fmt.Println(result, err)
+	fmt.Println(
+		vector.Cross(vec{0, 1, 2}, vec{3, 2, 1}),
+	)
 	// Output: [-3 6 -6] <nil>
 }
 
 func ExampleVector_Cross() {
-	v1, v2 := vec{0, 1, 2}, vec{3, 2, 1}
-	fmt.Println(v1.Cross(v2))
+	fmt.Println(
+		vec{0, 1, 2}.Cross(vec{3, 2, 1}),
+	)
 	// Output: [-3 6 -6] <nil>
 }
 
 func ExampleClone() {
-	vc := vector.Clone(vec{1, 2})
-	fmt.Println(vc)
+	fmt.Println(
+		vector.Clone(vec{1, 2}),
+	)
 	// Output: [1 2]
 }
 
@@ -117,8 +129,9 @@ func ExampleVector_Clone() {
 }
 
 func ExampleScale() {
-	v := vector.Scale(vec{1, 2}, 2)
-	fmt.Println(v)
+	fmt.Println(
+		vector.Scale(vec{1, 2}, 2),
+	)
 	// Output: [2 4]
 }
 
@@ -130,8 +143,9 @@ func ExampleVector_Scale() {
 }
 
 func ExampleMagnitude() {
-	l := vector.Magnitude(vec{1, 2})
-	fmt.Println(l)
+	fmt.Println(
+		vector.Magnitude(vec{1, 2}),
+	)
 	// Output: 2.23606797749979
 }
 
