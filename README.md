@@ -1,4 +1,4 @@
-# Vector
+# vector
 
 [![Version](https://img.shields.io/github/release/kvartborg/vector.svg)](https://github.com/kvartborg/vector/releases)
 [![Build Status](https://travis-ci.org/kvartborg/vector.svg?branch=master)](https://travis-ci.org/kvartborg/vector)
@@ -17,7 +17,7 @@ go get github.com/kvartborg/vector
 ```
 
 ## Usage
-Golang does not have a way to express generic types yet, which
+Golang does not have a way to define generic types yet, which
 limits this package to operate with vectors represented as `float64` values only.
 To allow for multi-dimensional vectors, a vector is simply represented as
 a list of `float64` values.
@@ -26,7 +26,7 @@ a list of `float64` values.
 type Vector []float64
 ```
 > I will consider adding `float32` and `int` support at a later stage,
-  if there is a good reason.
+  if there is a good reason or when go adds generics to the language.
 
 ### Tackling verbosity
 Another goal of this experiment is to minimize the verbosity around using the package,
@@ -50,8 +50,8 @@ v := vec([]float64{1, 2, 3})
 ```
 
 ### Mutability vs Immutability
-All operations supported by this package has a mutable and immutable implementation.
-The way this is separated in the package is that all package level functions are immutable
+Most of the arithmetic operations provided by this package has a mutable and immutable implementation.
+The way this is separated is that all package level functions are immutable
 and methods called on the vector it self are mutable on the calling vector.
 ```go
 // create vectors
@@ -64,7 +64,7 @@ result := vector.Add(v1, v2)
 result := v1.Add(v2)
 ```
 
-The mutable implementation is a lot faster and uses less memory compared to the immutable, this is because the calculation is done in place which saves a memory allocation for the resulting vector.
+The mutable implementation is a lot faster and uses less memory compared to the immutable, this is because the calculation is done in place.
 Mutable operations shall be used with care, because it can lead to bugs that can be hard to spot. A use case i find useful is to use the mutable operations when you are inlining the instantiation of the vectors.
 
 ```go
@@ -72,11 +72,35 @@ Mutable operations shall be used with care, because it can lead to bugs that can
 result := vec{1, 2}.Add(vec{2, 4})
 ```
 
+Or if you are creating a receiving vector where the calculation can be done in place.
+
+```go
+// Create result vector where the calculation can be done in place.
+var result vec
+
+// Create vectors
+v1, v2 := vec{1, 2}, vec{2, 4}
+
+// safe usage of mutable operation when called on a result vector
+result.Add(v1, v2)
+```
+
+### Slicing a vector
+Another benefit of using a list of `float64` to represent a vector is that you
+can slice vectors as you normally would slice lists in go.
+```go
+v1 := vec{1, 2, 3}
+v2 := v1[1:] // returns a new vec{2, 3}
+```
+
 ## Documentation
 The full documentation of the package can be found on [godoc](https://godoc.org/github.com/kvartborg/vector).
 
 ## Contributions
-Contributions with common vector operations that are not included in this package are very welcome.
+Contributions with common vector operations that are not included in this package are welcome.
+
+## Credits
+Thanks to [`gonum`](https://github.com/gonum/gonum) for inspiration and the [`axpyUnitaryTo`](https://github.com/gonum/gonum/blob/master/internal/asm/f64/axpyunitaryto_amd64.s) function that enhances the performance of arithmetic operations in this package.
 
 ## License
-This project is licensed under the [MIT License](https://github.com/kvartborg/vector/blob/master/LICENSE).
+This project is licensed under the [MIT License](https://github.com/kvartborg/vector/blob/master/LICENSE) and includes [`gonum`](https://github.com/gonum/gonum) code that is licensed under [3-Clause BSD license](https://github.com/gonum/gonum/blob/master/LICENSE).

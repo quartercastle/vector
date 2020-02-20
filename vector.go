@@ -5,6 +5,10 @@ import (
 	"math"
 )
 
+// axpyUnitaryTo is a function from the gonum package that optimizes arithmetic
+// operations on lists of float64 values
+func axpyUnitaryTo(dst []float64, alpha float64, x, y []float64)
+
 // Vector is the definition of a row vector that contains scalars as
 // 64 bit floats
 type Vector []float64
@@ -47,15 +51,14 @@ func Add(v1 Vector, vs ...Vector) Vector {
 func (v Vector) Add(vs ...Vector) Vector {
 	dimensions := len(v)
 
-	for _, vn := range vs {
-		for i := range vn {
-			if i >= dimensions {
-				ed := len(vn) - dimensions
-				v = append(v, make(Vector, ed)...)
-				dimensions += ed
-			}
-			v[i] += vn[i]
+	for i := range vs {
+		if vd := len(vs[i]); vd > dimensions {
+			v = append(v, make(Vector, vd-dimensions)...)
 		}
+	}
+
+	for i := range vs {
+		axpyUnitaryTo(v, 1, v, vs[i])
 	}
 
 	return v
@@ -70,15 +73,14 @@ func Sub(v1 Vector, vs ...Vector) Vector {
 func (v Vector) Sub(vs ...Vector) Vector {
 	dimensions := len(v)
 
-	for _, vn := range vs {
-		for i := range vn {
-			if i >= dimensions {
-				ed := len(vn) - dimensions
-				v = append(v, make(Vector, ed)...)
-				dimensions += ed
-			}
-			v[i] -= vn[i]
+	for i := range vs {
+		if vd := len(vs[i]); vd > dimensions {
+			v = append(v, make(Vector, vd-dimensions)...)
 		}
+	}
+
+	for i := range vs {
+		axpyUnitaryTo(v, -1, vs[i], v)
 	}
 
 	return v
@@ -105,7 +107,7 @@ func Equal(v1, v2 Vector) bool {
 	}
 
 	for i := range v1 {
-		if !(math.Abs(v1[i]-v2[i]) < 1e-5) {
+		if math.Abs(v1[i]-v2[i]) > 1e-5 {
 			return false
 		}
 	}
