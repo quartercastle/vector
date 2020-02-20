@@ -55,6 +55,7 @@ func (v Vector) Add(vs ...Vector) Vector {
 	for i := range vs {
 		if vd := len(vs[i]); vd > dimensions {
 			v = append(v, make(Vector, vd-dimensions)...)
+			dimensions += vd - dimensions
 		}
 	}
 
@@ -77,6 +78,7 @@ func (v Vector) Sub(vs ...Vector) Vector {
 	for i := range vs {
 		if vd := len(vs[i]); vd > dimensions {
 			v = append(v, make(Vector, vd-dimensions)...)
+			dimensions += vd - dimensions
 		}
 	}
 
