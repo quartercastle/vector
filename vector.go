@@ -91,7 +91,7 @@ func (v Vector) Sub(vs ...Vector) Vector {
 
 // Scale vector with a given size
 func Scale(v Vector, size float64) Vector {
-	return v.Clone().Scale(2)
+	return v.Clone().Scale(size)
 }
 
 // Scale vector with a given size
