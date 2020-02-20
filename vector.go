@@ -27,7 +27,7 @@ const (
 
 var (
 	// ErrNot3Dimensional is an error that is returned in functions that only
-	// supports operations on 3 dimensional vectors
+	// supports 3 dimensional vectors
 	ErrNot3Dimensional = errors.New("vector is not 3 dimensional")
 )
 
