@@ -5,9 +5,10 @@ import (
 	"math"
 )
 
-// axpyUnitaryTo is a function from the gonum package that optimizes arithmetic
+// functions from the gonum package that optimizes arithmetic
 // operations on lists of float64 values
 func axpyUnitaryTo(dst []float64, alpha float64, x, y []float64)
+func scalUnitaryTo(dst []float64, alpha float64, x []float64)
 
 // Vector is the definition of a row vector that contains scalars as
 // 64 bit floats
@@ -93,10 +94,7 @@ func Scale(v Vector, size float64) Vector {
 
 // Scale vector with a given size
 func (v Vector) Scale(size float64) Vector {
-	for i := range v {
-		v[i] *= size
-	}
-
+	scalUnitaryTo(v, size, v)
 	return v
 }
 

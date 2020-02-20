@@ -100,7 +100,7 @@ The full documentation of the package can be found on [godoc](https://godoc.org/
 Contributions with common vector operations that are not included in this package are welcome.
 
 ## Credits
-Thanks to [`gonum`](https://github.com/gonum/gonum) for inspiration and the [`axpyUnitaryTo`](https://github.com/gonum/gonum/blob/master/internal/asm/f64/axpyunitaryto_amd64.s) function that enhances the performance of arithmetic operations in this package.
+Thanks to [`gonum`](https://github.com/gonum/gonum) for inspiration and the following functions [`axpyUnitaryTo`](https://github.com/gonum/gonum/blob/master/internal/asm/f64/axpyunitaryto_amd64.s), [`scalUnitaryTo`](https://github.com/gonum/gonum/blob/c3867503e73e5c3fee7ab93e3c2c562eb2be8178/internal/asm/f64/scalunitaryto_amd64.s) that enhances the performance of arithmetic operations in this package.
 
 ## License
 This project is licensed under the [MIT License](https://github.com/kvartborg/vector/blob/master/LICENSE) and includes [`gonum`](https://github.com/gonum/gonum) code that is licensed under [3-Clause BSD license](https://github.com/gonum/gonum/blob/master/LICENSE).
