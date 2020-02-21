@@ -57,9 +57,6 @@ func (v Vector) Add(vs ...Vector) Vector {
 			v = append(v, make(Vector, vd-dimensions)...)
 			dimensions += vd - dimensions
 		}
-	}
-
-	for i := range vs {
 		axpyUnitaryTo(v, 1, v, vs[i])
 	}
 
@@ -80,9 +77,6 @@ func (v Vector) Sub(vs ...Vector) Vector {
 			v = append(v, make(Vector, vd-dimensions)...)
 			dimensions += vd - dimensions
 		}
-	}
-
-	for i := range vs {
 		axpyUnitaryTo(v, -1, vs[i], v)
 	}
 
