@@ -5,11 +5,6 @@ import (
 	"math"
 )
 
-// functions from the gonum package that optimizes arithmetic
-// operations on lists of float64 values
-func axpyUnitaryTo(dst []float64, alpha float64, x, y []float64)
-func scalUnitaryTo(dst []float64, alpha float64, x []float64)
-
 // Vector is the definition of a row vector that contains scalars as
 // 64 bit floats
 type Vector []float64

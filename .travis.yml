@@ -1,11 +1,13 @@
 language: go
+arch:
+  - amd64
+  - arm64
 os:
   - linux
+  - windows
   - osx
 go:
-  - 1.11.x
-  - 1.12.x
   - 1.13.x
   - master
 
-script: go test -race && go test -bench=.
+script: go test -bench=.
