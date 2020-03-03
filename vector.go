@@ -96,7 +96,7 @@ func Equal(v1, v2 Vector) bool {
 	}
 
 	for i := range v1 {
-		if math.Abs(v1[i]-v2[i]) > 1e-5 {
+		if math.Abs(v1[i]-v2[i]) > 1e-8 {
 			return false
 		}
 	}
