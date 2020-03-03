@@ -4,7 +4,6 @@ arch:
   - arm64
 os:
   - linux
-  - windows
   - osx
 go:
   - 1.13.x
