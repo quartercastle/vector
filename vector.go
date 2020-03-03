@@ -130,6 +130,26 @@ func (v Vector) Magnitude() float64 {
 	return Magnitude(v)
 }
 
+// Unit returns a direction vector with the length of one.
+func Unit(v Vector) Vector {
+	return v.Clone().Unit()
+}
+
+// Unit returns a direction vector with the length of one.
+func (v Vector) Unit() Vector {
+	l := v.Magnitude()
+
+	if math.Abs(l) < 1e-8 {
+		return v
+	}
+
+	for i := range v {
+		v[i] = v[i] / l
+	}
+
+	return v
+}
+
 // Dot product of two vectors
 func Dot(v1, v2 Vector) float64 {
 	var result float64

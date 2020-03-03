@@ -156,6 +156,20 @@ func ExampleVector_Magnitude() {
 	// Output: 2.23606797749979
 }
 
+func ExampleUnit() {
+	fmt.Println(
+		vector.Unit(vec{1, 2}),
+	)
+	// Output: [0.4472135954999579 0.8944271909999159]
+}
+
+func ExampleVector_Unit() {
+	fmt.Println(
+		vec{1, 2}.Unit(),
+	)
+	// Output: [0.4472135954999579 0.8944271909999159]
+}
+
 func BenchmarkAdd(b *testing.B) {
 	v1, v2 := vec{1, 2}, vec{2, 3}
 
@@ -249,5 +263,21 @@ func BenchmarkCross(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		vector.Cross(v1, v2)
+	}
+}
+
+func BenchmarkUnit(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		vector.Unit(v)
+	}
+}
+
+func BenchmarkVector_Unit(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		v.Unit()
 	}
 }
