@@ -24,8 +24,8 @@ type vec = vector.Vector
 func TestMultiDimensionalVec(t *testing.T) {
 	result := vec{1}.Add(vec{1, 2})
 
-	if result[0] != 2 || result[1] != 2 {
-		t.Error("dimension mishmatch")
+	if len(result) > 1 {
+		t.Error("did not normalise vector to lowest dimension")
 	}
 }
 
@@ -39,7 +39,7 @@ func Example() {
 	fmt.Println(
 		v1.Add(v2),
 	)
-	// Output: [5 4 4]
+	// Output: [5 4]
 }
 
 func ExampleAdd() {

@@ -76,7 +76,7 @@ Or if you are creating a receiving vector where the calculation can be done in p
 
 ```go
 // Create result vector where the calculation can be done in place.
-var result vec
+result := make(vec, 2)
 
 // Create vectors
 v1, v2 := vec{1, 2}, vec{2, 4}

@@ -45,14 +45,14 @@ func Add(v1 Vector, vs ...Vector) Vector {
 
 // Add a vector with a vector or a set of vectors
 func (v Vector) Add(vs ...Vector) Vector {
-	dimensions := len(v)
+	dim := len(v)
 
 	for i := range vs {
-		if vd := len(vs[i]); vd > dimensions {
-			v = append(v, make(Vector, vd-dimensions)...)
-			dimensions += vd - dimensions
+		if len(vs[i]) > dim {
+			axpyUnitaryTo(v, 1, v, vs[i][:dim])
+		} else {
+			axpyUnitaryTo(v, 1, v, vs[i])
 		}
-		axpyUnitaryTo(v, 1, v, vs[i])
 	}
 
 	return v
@@ -65,14 +65,14 @@ func Sub(v1 Vector, vs ...Vector) Vector {
 
 // Sub subtracts a vector with another vector or a set of vectors
 func (v Vector) Sub(vs ...Vector) Vector {
-	dimensions := len(v)
+	dim := len(v)
 
 	for i := range vs {
-		if vd := len(vs[i]); vd > dimensions {
-			v = append(v, make(Vector, vd-dimensions)...)
-			dimensions += vd - dimensions
+		if len(vs[i]) > dim {
+			axpyUnitaryTo(v, -1, vs[i][:dim], v)
+		} else {
+			axpyUnitaryTo(v, -1, vs[i], v)
 		}
-		axpyUnitaryTo(v, -1, vs[i], v)
 	}
 
 	return v
