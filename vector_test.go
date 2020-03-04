@@ -203,14 +203,14 @@ func ExampleRotate() {
 	fmt.Println(
 		vector.Rotate(vec{1, 0}, math.Pi/2),
 	)
-	// Output: [6.123233995736757e-17 1]
+	// Output: [0 1]
 }
 
 func ExampleVector_Rotate() {
 	fmt.Println(
 		vec{1, 0, 0}.Rotate(math.Pi/2, vector.Y),
 	)
-	// Output: [6.123233995736757e-17 0 -1]
+	// Output: [0 0 -1]
 }
 
 func BenchmarkAdd(b *testing.B) {

@@ -2,6 +2,7 @@ package vector
 
 import (
 	"errors"
+	"fmt"
 	"math"
 )
 
@@ -9,7 +10,7 @@ import (
 // 64 bit floats
 type Vector []float64
 
-// axis is an integer enum type that describes vector axis
+// Axis is an integer enum type that describes vector axis
 type Axis int
 
 const (
@@ -224,11 +225,11 @@ func (v Vector) Rotate(angle float64, as ...Axis) Vector {
 		v = append(v, 0)
 	}
 
-	x, y := v[0], v[1]
+	x, y := v[X], v[Y]
 
 	switch axis {
 	case X:
-		z := v[2]
+		z := v[Z]
 		v[Y] = y*math.Cos(angle) - z*math.Sin(angle)
 		v[Z] = y*math.Sin(angle) + z*math.Cos(angle)
 	case Y:
@@ -245,4 +246,18 @@ func (v Vector) Rotate(angle float64, as ...Axis) Vector {
 	}
 
 	return v
+}
+
+// String returns the string representation of a vector
+func (v Vector) String() (str string) {
+	for i := range v {
+		if v[i] < 1e-8 && v[i] > 0 {
+			str += "0 "
+		} else {
+			str += fmt.Sprint(v[i]) + " "
+		}
+
+	}
+
+	return "[" + str[:len(str)-1] + "]"
 }
