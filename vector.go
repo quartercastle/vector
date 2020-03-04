@@ -212,6 +212,10 @@ func Rotate(v Vector, angle float64, as ...Axis) Vector {
 func (v Vector) Rotate(angle float64, as ...Axis) Vector {
 	axis, dim := Z, len(v)
 
+	if dim == 0 {
+		return v
+	}
+
 	if len(as) > 0 {
 		axis = as[0]
 	}
