@@ -10,14 +10,14 @@ import (
 type Vector []float64
 
 // axis is an integer enum type that describes vector axis
-type axis int
+type Axis int
 
 const (
 	// the consts below are used to represent vector axis, they are useful
 	// to lookup values within the vector.
-	x axis = iota
-	y
-	z
+	X Axis = iota
+	Y
+	Z
 )
 
 var (
@@ -134,7 +134,7 @@ func Unit(v Vector) Vector {
 func (v Vector) Unit() Vector {
 	l := v.Magnitude()
 
-	if math.Abs(l) < 1e-8 {
+	if l < 1e-8 {
 		return v
 	}
 
@@ -176,13 +176,69 @@ func Cross(v1, v2 Vector) (Vector, error) {
 	}
 
 	return Vector{
-		v1[y]*v2[z] - v1[z]*v2[y],
-		v1[z]*v2[x] - v1[x]*v2[z],
-		v1[x]*v2[z] - v1[z]*v2[x],
+		v1[Y]*v2[Z] - v1[Z]*v2[Y],
+		v1[Z]*v2[X] - v1[X]*v2[Z],
+		v1[X]*v2[Z] - v1[Z]*v2[X],
 	}, nil
 }
 
 // Cross product of two vectors
 func (v Vector) Cross(v2 Vector) (Vector, error) {
 	return Cross(v, v2)
+}
+
+// Rotate is rotating a vector around a specified axis.
+// If no axis are specified, it will default to the Z axis.
+//
+// If a vector with more than 3-dimensions is rotated, it will cut the extra
+// dimensions and return a 3-dimensional vector.
+//
+// NOTE: the ...Axis is just syntactic sugar that allows the axis to not be
+// specified and default to Z, if multiple axis is passed the first will be
+// set as the rotation axis
+func Rotate(v Vector, angle float64, as ...Axis) Vector {
+	return v.Clone().Rotate(angle, as...)
+}
+
+// Rotate is rotating a vector around a specified axis.
+// If no axis are specified, it will default to the Z axis.
+//
+// If a vector with more than 3-dimensions is rotated, it will cut the extra
+// dimensions and return a 3-dimensional vector.
+//
+// NOTE: the ...Axis is just syntactic sugar that allows the axis to not be
+// specified and default to Z, if multiple axis is passed the first will be
+// set as the rotation axis
+func (v Vector) Rotate(angle float64, as ...Axis) Vector {
+	axis, dim := Z, len(v)
+
+	if len(as) > 0 {
+		axis = as[0]
+	}
+
+	if (dim < 2 && axis == Z) || (dim == 2 && axis != Z) {
+		v = append(v, 0)
+	}
+
+	x, y := v[0], v[1]
+
+	switch axis {
+	case X:
+		z := v[2]
+		v[Y] = y*math.Cos(angle) - z*math.Sin(angle)
+		v[Z] = y*math.Sin(angle) + z*math.Cos(angle)
+	case Y:
+		z := v[2]
+		v[X] = x*math.Cos(angle) + z*math.Sin(angle)
+		v[Z] = -x*math.Sin(angle) + z*math.Cos(angle)
+	case Z:
+		v[X] = x*math.Cos(angle) - y*math.Sin(angle)
+		v[Y] = x*math.Sin(angle) + y*math.Cos(angle)
+	}
+
+	if dim > 3 {
+		return v[:3]
+	}
+
+	return v
 }
