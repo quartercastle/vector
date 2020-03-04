@@ -2,6 +2,7 @@ package vector_test
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/kvartborg/vector"
@@ -29,17 +30,47 @@ func TestMultiDimensionalVec(t *testing.T) {
 	}
 }
 
+func TestRotationOfVector(t *testing.T) {
+	result := vec{1}.Rotate(math.Pi / 2)
+
+	if result[vector.X] > 1e-8 || result[vector.Y] != 1 {
+		t.Error("did not up scale to 2-dimensions")
+	}
+
+	result = vec{1, 0}.Rotate(math.Pi / 2)
+
+	if result[vector.X] > 1e-8 || result[vector.Y] != 1 || len(result) != 2 {
+		t.Error("did not keep 2-dimensions when input vec is 2-dimensions and it should rotate around the z axis")
+	}
+
+	result = vec{1, 0}.Rotate(math.Pi/2, vector.Y)
+
+	if result[vector.X] > 1e-8 || result[vector.Y] != 0 || result[vector.Z] != -1 {
+		t.Error("did not upscale to 3-dimensions")
+	}
+
+	result = vec{1, 0, 0, 0}.Rotate(math.Pi/2, vector.Y)
+
+	if len(result) > 3 {
+		t.Error("did not cut extra dimensions")
+	}
+
+}
+
 func Example() {
+	// create a zero vector of 3-dimensions
+	v1 := make(vec, 3)
+
 	// Create a new vector
-	v1 := vec{4, 2}
+	v2 := vec{4, 2}
 
 	// Create a vector from a list of float64
-	v2 := vec([]float64{1, 2, 4})
+	v3 := vec([]float64{1, 2, 4})
 
 	fmt.Println(
-		v1.Add(v2),
+		v1.Add(v2, v3),
 	)
-	// Output: [5 4]
+	// Output: [5 4 4]
 }
 
 func ExampleAdd() {
@@ -168,6 +199,20 @@ func ExampleVector_Unit() {
 	// Output: [0.4472135954999579 0.8944271909999159]
 }
 
+func ExampleRotate() {
+	fmt.Println(
+		vector.Rotate(vec{1, 0}, math.Pi/2),
+	)
+	// Output: [6.123233995736757e-17 1]
+}
+
+func ExampleVector_Rotate() {
+	fmt.Println(
+		vec{1, 0, 0}.Rotate(math.Pi/2, vector.Y),
+	)
+	// Output: [6.123233995736757e-17 0 -1]
+}
+
 func BenchmarkAdd(b *testing.B) {
 	v1, v2 := vec{1, 2}, vec{2, 3}
 
@@ -277,6 +322,22 @@ func BenchmarkVector_Unit(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		v.Unit()
+	}
+}
+
+func BenchmarkVectorRotate(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		vector.Rotate(v, math.Pi/2)
+	}
+}
+
+func BenchmarkVector_Rotate(b *testing.B) {
+	v := vec{1, 2}
+
+	for i := 0; i < b.N; i++ {
+		v.Rotate(math.Pi / 2)
 	}
 }
 
