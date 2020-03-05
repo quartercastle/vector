@@ -115,7 +115,7 @@ func Magnitude(v Vector) float64 {
 	var result float64
 
 	for _, scalar := range v {
-		result += math.Pow(scalar, 2)
+		result += scalar * scalar
 	}
 
 	return math.Sqrt(result)
