@@ -273,7 +273,7 @@ func (v Vector) X() float64 {
 		return 0.
 	}
 
-	return v[0]
+	return v[X]
 }
 
 // Y is corresponding to doing a v[1] lookup, if index 1 does not exist yet, a
@@ -283,7 +283,7 @@ func (v Vector) Y() float64 {
 		return 0.
 	}
 
-	return v[1]
+	return v[Y]
 }
 
 // Z is corresponding to doing a v[2] lookup, if index 2 does not exist yet, a
@@ -293,5 +293,5 @@ func (v Vector) Z() float64 {
 		return 0.
 	}
 
-	return v[2]
+	return v[Z]
 }
