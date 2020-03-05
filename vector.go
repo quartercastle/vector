@@ -231,18 +231,20 @@ func (v Vector) Rotate(angle float64, as ...Axis) Vector {
 
 	x, y := v[X], v[Y]
 
+	cos, sin := math.Cos(angle), math.Sin(angle)
+
 	switch axis {
 	case X:
 		z := v[Z]
-		v[Y] = y*math.Cos(angle) - z*math.Sin(angle)
-		v[Z] = y*math.Sin(angle) + z*math.Cos(angle)
+		v[Y] = y*cos - z*sin
+		v[Z] = y*sin + z*cos
 	case Y:
-		z := v[2]
-		v[X] = x*math.Cos(angle) + z*math.Sin(angle)
-		v[Z] = -x*math.Sin(angle) + z*math.Cos(angle)
+		z := v[Z]
+		v[X] = x*cos + z*sin
+		v[Z] = -x*sin + z*cos
 	case Z:
-		v[X] = x*math.Cos(angle) - y*math.Sin(angle)
-		v[Y] = x*math.Sin(angle) + y*math.Cos(angle)
+		v[X] = x*cos - y*sin
+		v[Y] = x*sin + y*cos
 	}
 
 	if dim > 3 {
