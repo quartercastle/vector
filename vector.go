@@ -261,3 +261,33 @@ func (v Vector) String() (str string) {
 
 	return "[" + str[:len(str)-1] + "]"
 }
+
+// X is corresponding to doing a v[0] lookup, if index 0 does not exist yet, a
+// 0 will be returned instead
+func (v Vector) X() float64 {
+	if len(v) < 1 {
+		return 0.
+	}
+
+	return v[0]
+}
+
+// Y is corresponding to doing a v[1] lookup, if index 1 does not exist yet, a
+// 0 will be returned instead
+func (v Vector) Y() float64 {
+	if len(v) < 2 {
+		return 0.
+	}
+
+	return v[1]
+}
+
+// Z is corresponding to doing a v[2] lookup, if index 2 does not exist yet, a
+// 0 will be returned instead
+func (v Vector) Z() float64 {
+	if len(v) < 3 {
+		return 0.
+	}
+
+	return v[2]
+}

@@ -56,6 +56,20 @@ func TestRotationOfVector(t *testing.T) {
 
 }
 
+func TestXYZGetters(t *testing.T) {
+	v1 := vec{}
+
+	if v1.X() != 0 || v1.Y() != 0 || v1.Z() != 0 {
+		t.Error("getter methods for x, y, z did not return 0 when expected")
+	}
+
+	v2 := vec{1, 2, 3}
+
+	if v2.X() != 1 || v2.Y() != 2 || v2.Z() != 3 {
+		t.Error("getter methods for x, y, z did not return 0 when expected")
+	}
+}
+
 func Example() {
 	// create a zero vector of 3-dimensions
 	v1 := make(vec, 3)
