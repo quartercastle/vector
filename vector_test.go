@@ -32,19 +32,25 @@ func TestMultiDimensionalVec(t *testing.T) {
 func TestRotationOfVector(t *testing.T) {
 	result := vec{1}.Rotate(math.Pi / 2)
 
-	if result[vector.X] > 1e-8 || result[vector.Y] != 1 {
+	if result.X() > 1e-8 || result.Y() != 1 {
+		t.Error("did not up scale to 2-dimensions")
+	}
+
+	result = vec{1}.Rotate(math.Pi/2, vector.Y)
+
+	if result.X() > 1e-8 || result.Y() > 1e-8 || result.Z() != -1 {
 		t.Error("did not up scale to 2-dimensions")
 	}
 
 	result = vec{1, 0}.Rotate(math.Pi / 2)
 
-	if result[vector.X] > 1e-8 || result[vector.Y] != 1 || len(result) != 2 {
+	if result.X() > 1e-8 || result.Y() != 1 || len(result) != 2 {
 		t.Error("did not keep 2-dimensions when input vec is 2-dimensions and it should rotate around the z axis")
 	}
 
 	result = vec{1, 0}.Rotate(math.Pi/2, vector.Y)
 
-	if result[vector.X] > 1e-8 || result[vector.Y] != 0 || result[vector.Z] != -1 {
+	if result.X() > 1e-8 || result.Y() != 0 || result[vector.Z] != -1 {
 		t.Error("did not upscale to 3-dimensions")
 	}
 

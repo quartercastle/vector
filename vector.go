@@ -221,6 +221,10 @@ func (v Vector) Rotate(angle float64, as ...Axis) Vector {
 		axis = as[0]
 	}
 
+	if dim == 1 && axis != Z {
+		v = append(v, 0, 0)
+	}
+
 	if (dim < 2 && axis == Z) || (dim == 2 && axis != Z) {
 		v = append(v, 0)
 	}
