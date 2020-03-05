@@ -148,14 +148,14 @@ func (v Vector) Unit() Vector {
 
 // Dot product of two vectors
 func Dot(v1, v2 Vector) float64 {
-	var result float64
+	result, dim1, dim2 := 0., len(v1), len(v2)
 
-	if len(v1) > len(v2) {
-		v2 = append(v2, make(Vector, len(v1)-len(v2))...)
+	if dim1 > dim2 {
+		v2 = append(v2, make(Vector, dim1-dim2)...)
 	}
 
-	if len(v1) < len(v2) {
-		v1 = append(v1, make(Vector, len(v2)-len(v1))...)
+	if dim1 < dim2 {
+		v1 = append(v1, make(Vector, dim2-dim1)...)
 	}
 
 	for i := range v1 {
