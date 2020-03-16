@@ -173,7 +173,7 @@ func (v Vector) Dot(v2 Vector) float64 {
 // Cross product of two vectors
 func Cross(v1, v2 Vector) (Vector, error) {
 	if len(v1) != 3 || len(v2) != 3 {
-		return Vector{}, ErrNot3Dimensional
+		return nil, ErrNot3Dimensional
 	}
 
 	return Vector{
@@ -256,6 +256,10 @@ func (v Vector) Rotate(angle float64, as ...Axis) Vector {
 
 // String returns the string representation of a vector
 func (v Vector) String() (str string) {
+	if v == nil {
+		return "[]"
+	}
+
 	for i := range v {
 		if v[i] < 1e-8 && v[i] > 0 {
 			str += "0 "

@@ -22,9 +22,10 @@ func TestSlicingOfVectors(t *testing.T) {
 }
 
 func TestMultiDimensionalVec(t *testing.T) {
-	result := vec{1}.Add(vec{1, 2})
+	v1 := vec{1}.Add(vec{1, 2})
+	v2 := vec{1, 2}.Add(vec{1})
 
-	if len(result) > 1 {
+	if len(v1) != 1 || len(v2) != 2 {
 		t.Error("did not normalise vector to lowest dimension")
 	}
 }
@@ -233,6 +234,7 @@ func ExampleVector_Rotate() {
 }
 
 func BenchmarkAdd(b *testing.B) {
+	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{2, 3}
 
 	for i := 0; i < b.N; i++ {
@@ -241,6 +243,7 @@ func BenchmarkAdd(b *testing.B) {
 }
 
 func BenchmarkVector_Add(b *testing.B) {
+	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{2, 3}
 
 	for i := 0; i < b.N; i++ {
@@ -249,6 +252,7 @@ func BenchmarkVector_Add(b *testing.B) {
 }
 
 func BenchmarkSub(b *testing.B) {
+	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{2, 3}
 
 	for i := 0; i < b.N; i++ {
@@ -257,6 +261,7 @@ func BenchmarkSub(b *testing.B) {
 }
 
 func BenchmarkVector_Sub(b *testing.B) {
+	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{2, 3}
 
 	for i := 0; i < b.N; i++ {
@@ -265,6 +270,7 @@ func BenchmarkVector_Sub(b *testing.B) {
 }
 
 func BenchmarkClone(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -273,6 +279,7 @@ func BenchmarkClone(b *testing.B) {
 }
 
 func BenchmarkVector_Clone(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -281,6 +288,7 @@ func BenchmarkVector_Clone(b *testing.B) {
 }
 
 func BenchmarkScale(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -289,6 +297,7 @@ func BenchmarkScale(b *testing.B) {
 }
 
 func BenchmarkVector_Scale(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -297,6 +306,7 @@ func BenchmarkVector_Scale(b *testing.B) {
 }
 
 func BenchmarkEqual(b *testing.B) {
+	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -305,6 +315,7 @@ func BenchmarkEqual(b *testing.B) {
 }
 
 func BenchmarkMagnitude(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -313,6 +324,7 @@ func BenchmarkMagnitude(b *testing.B) {
 }
 
 func BenchmarkDot(b *testing.B) {
+	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{2, 1}
 
 	for i := 0; i < b.N; i++ {
@@ -321,6 +333,7 @@ func BenchmarkDot(b *testing.B) {
 }
 
 func BenchmarkCross(b *testing.B) {
+	b.ReportAllocs()
 	v1, v2 := vec{1, 2, 3}, vec{3, 2, 1}
 
 	for i := 0; i < b.N; i++ {
@@ -329,6 +342,7 @@ func BenchmarkCross(b *testing.B) {
 }
 
 func BenchmarkUnit(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -337,6 +351,7 @@ func BenchmarkUnit(b *testing.B) {
 }
 
 func BenchmarkVector_Unit(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -345,6 +360,7 @@ func BenchmarkVector_Unit(b *testing.B) {
 }
 
 func BenchmarkVectorRotate(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -353,6 +369,7 @@ func BenchmarkVectorRotate(b *testing.B) {
 }
 
 func BenchmarkVector_Rotate(b *testing.B) {
+	b.ReportAllocs()
 	v := vec{1, 2}
 
 	for i := 0; i < b.N; i++ {
@@ -360,7 +377,17 @@ func BenchmarkVector_Rotate(b *testing.B) {
 	}
 }
 
+func BenchmarkSlicing(b *testing.B) {
+	b.ReportAllocs()
+	v := make(vec, 100)
+
+	for i := 0; i < b.N; i++ {
+		_ = v[:]
+	}
+}
+
 func BenchmarkStructVectorAddition(b *testing.B) {
+	b.ReportAllocs()
 	type vector struct{ x, y, z float64 }
 
 	add := func(v1, v2 vector) vector {
