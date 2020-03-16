@@ -29,14 +29,14 @@ var (
 
 // Clone a vector
 func Clone(v Vector) Vector {
-	clone := make(Vector, len(v))
-	copy(clone, v)
-	return clone
+	return v.Clone()
 }
 
 // Clone a vector
 func (v Vector) Clone() Vector {
-	return Clone(v)
+	clone := make(Vector, len(v))
+	copy(clone, v)
+	return clone
 }
 
 // Add a vector with a vector or a set of vectors
@@ -92,12 +92,17 @@ func (v Vector) Scale(size float64) Vector {
 
 // Equal compares that two vectors are equal to each other
 func Equal(v1, v2 Vector) bool {
-	if len(v1) != len(v2) {
+	return v1.Equal(v2)
+}
+
+// Equal compares that two vectors are equal to each other
+func (v Vector) Equal(v2 Vector) bool {
+	if len(v) != len(v2) {
 		return false
 	}
 
-	for i := range v1 {
-		if math.Abs(v1[i]-v2[i]) > 1e-8 {
+	for i := range v {
+		if math.Abs(v[i]-v2[i]) > 1e-8 {
 			return false
 		}
 	}
@@ -105,13 +110,13 @@ func Equal(v1, v2 Vector) bool {
 	return true
 }
 
-// Equal compares that two vectors are equal to each other
-func (v Vector) Equal(v2 Vector) bool {
-	return Equal(v, v2)
+// Magnitude of a vector
+func Magnitude(v Vector) float64 {
+	return v.Magnitude()
 }
 
 // Magnitude of a vector
-func Magnitude(v Vector) float64 {
+func (v Vector) Magnitude() float64 {
 	var result float64
 
 	for _, scalar := range v {
@@ -119,11 +124,6 @@ func Magnitude(v Vector) float64 {
 	}
 
 	return math.Sqrt(result)
-}
-
-// Magnitude of a vector
-func (v Vector) Magnitude() float64 {
-	return Magnitude(v)
 }
 
 // Unit returns a direction vector with the length of one.
@@ -172,20 +172,20 @@ func (v Vector) Dot(v2 Vector) float64 {
 
 // Cross product of two vectors
 func Cross(v1, v2 Vector) (Vector, error) {
-	if len(v1) != 3 || len(v2) != 3 {
-		return nil, ErrNot3Dimensional
-	}
-
-	return Vector{
-		v1[Y]*v2[Z] - v1[Z]*v2[Y],
-		v1[Z]*v2[X] - v1[X]*v2[Z],
-		v1[X]*v2[Z] - v1[Z]*v2[X],
-	}, nil
+	return v1.Cross(v2)
 }
 
 // Cross product of two vectors
 func (v Vector) Cross(v2 Vector) (Vector, error) {
-	return Cross(v, v2)
+	if len(v) != 3 || len(v2) != 3 {
+		return nil, ErrNot3Dimensional
+	}
+
+	return Vector{
+		v[Y]*v2[Z] - v[Z]*v2[Y],
+		v[Z]*v2[X] - v[X]*v2[Z],
+		v[X]*v2[Z] - v[Z]*v2[X],
+	}, nil
 }
 
 // Rotate is rotating a vector around a specified axis.
