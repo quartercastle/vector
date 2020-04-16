@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/github/release/kvartborg/vector.svg)](https://github.com/kvartborg/vector/releases)
 [![Build Status](https://travis-ci.org/kvartborg/vector.svg?branch=master)](https://travis-ci.org/kvartborg/vector)
-[![GoDoc](https://godoc.org/github.com/kvartborg/vector?status.svg)](https://godoc.org/github.com/kvartborg/vector)
+[![GoDoc](https://godoc.org/github.com/kvartborg/vector?status.svg)](https://pkg.go.dev/github.com/kvartborg/vector?tab=doc)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kvartborg/vector)](https://goreportcard.com/report/github.com/kvartborg/vector)
 
 The motivation behind this package is to find a better way to write vector math
@@ -94,7 +94,7 @@ v2 := v1[1:] // returns a new vec{2, 3}
 ```
 
 ## Documentation
-The full documentation of the package can be found on [godoc](https://godoc.org/github.com/kvartborg/vector).
+The full documentation of the package can be found on [godoc](https://pkg.go.dev/github.com/kvartborg/vector?tab=doc).
 
 ## Contributions
 Contributions with common vector operations that are not included in this package are welcome.
