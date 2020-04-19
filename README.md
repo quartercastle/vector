@@ -30,7 +30,7 @@ type Vector []float64
 
 ### Tackling verbosity
 Another goal of this experiment is to minimize the verbosity around using the package,
-this can be acheived by using type aliasing. In this way you can omit the package
+this can be achieved by using type aliasing. In this way you can omit the package
 identifier and give the `Vector` a shorter name like `vec` or something else,
 it is up to you.
 ```go
