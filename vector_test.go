@@ -10,6 +10,14 @@ import (
 
 type vec = vector.Vector
 
+func TestCasting(t *testing.T) {
+	result := vec{1, 2}.Add([]float64{2, 4})
+
+	if !result.Equal(vec{3, 6}) {
+		t.Errorf("Casting did not work as expected")
+	}
+}
+
 func TestSlicingOfVectors(t *testing.T) {
 	v1 := vec{1, 2, 3}
 	v2 := v1[1:]
