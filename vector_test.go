@@ -161,14 +161,14 @@ func ExampleCross() {
 	fmt.Println(
 		vector.Cross(vec{0, 1, 2}, vec{3, 2, 1}),
 	)
-	// Output: [-3 6 -6] <nil>
+	// Output: [-3 6 -3] <nil>
 }
 
 func ExampleVector_Cross() {
 	fmt.Println(
 		vec{0, 1, 2}.Cross(vec{3, 2, 1}),
 	)
-	// Output: [-3 6 -6] <nil>
+	// Output: [-3 6 -3] <nil>
 }
 
 func ExampleClone() {
@@ -239,6 +239,20 @@ func ExampleVector_Rotate() {
 		vec{1, 0, 0}.Rotate(math.Pi/2, vector.Y),
 	)
 	// Output: [0 0 -1]
+}
+
+func ExampleAngle() {
+	fmt.Println(
+		vector.Angle(vec{1, 0}, vec{0, 1}),
+	)
+	// Output: 1.5707963267948966 [0 0 1] <nil>
+}
+
+func ExampleVector_Angle() {
+	fmt.Println(
+		vec{17, 4, 3}.Angle(vec{-1, 15, 7}),
+	)
+	// Output: 1.351241200672429 [-0.05927484240309407 -0.42538416312808686 0.9030696577883156] <nil>
 }
 
 func BenchmarkAdd(b *testing.B) {
