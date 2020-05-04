@@ -79,6 +79,19 @@ func (v Vector) Sub(vs ...Vector) Vector {
 	return v
 }
 
+// Invert returns a copy of the inverse of the provided Vector
+func Invert(v Vector) Vector {
+	return v.Clone().Invert()
+}
+
+// Invert inverts the vector, and then returns it
+func (v Vector) Invert() Vector {
+	for i := range v {
+		v[i] *= -1
+	}
+	return v
+}
+
 // Scale vector with a given size
 func Scale(v Vector, size float64) Vector {
 	return v.Clone().Scale(size)

@@ -241,6 +241,20 @@ func ExampleVector_Rotate() {
 	// Output: [0 0 -1]
 }
 
+func ExampleInvert() {
+	fmt.Println(
+		vector.Invert(vec{24, 16}),
+	)
+	// Output: [-24 -16]
+}
+
+func ExampleVector_Invert() {
+	fmt.Println(
+		vec{19, 0, 3}.Invert(),
+	)
+	// Output: [-19 -0 -3]
+}
+
 func BenchmarkAdd(b *testing.B) {
 	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{2, 3}
