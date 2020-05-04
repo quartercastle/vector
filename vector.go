@@ -24,7 +24,7 @@ const (
 var (
 	// ErrNot3Dimensional is an error that is returned in functions that only
 	// supports 3 dimensional vectors
-	ErrNot3Dimensional   = errors.New("vector is not 3 dimensional")
+	ErrNot3Dimensional = errors.New("vector is not 3 dimensional")
 	// ErrNotSameDimensions is an error that is returned when functions need both
 	// Vectors provided to be the same dimensionally
 	ErrNotSameDimensions = errors.New("the two vectors provided aren't the same dimensional size")
@@ -257,47 +257,43 @@ func (v Vector) Rotate(angle float64, as ...Axis) Vector {
 	return v
 }
 
-// Angle returns the angle in radians from the first Vector to the second, the Vector of rotation, and an error if the
-// two Vectors aren't of equal dimensions (length). For 0-dimension Vectors, the angle is 0, and the rotation Vector
-// is empty. For 1-dimension Vectors, the angle is 0 if they both have the same sign, and pi if they don't.
-// The Vector of rotation is, again, empty. For 2-dimension Vectors, the Vector of rotation is a Unit Vector in the Z
-// direction (0, 0, 1).
-func Angle(v1, v2 Vector) (float64, Vector, error) {
+// Angle returns the angle in radians from the first Vector to the second, and an error if the two Vectors
+// aren't of equal dimensions (length). For 0-dimension Vectors, the returned angle is 0. For 1-dimension Vectors,
+// the angle is Pi if the second Vector's coordinate is less than the first Vector's coordinate, and 0 otherwise.
+func Angle(v1, v2 Vector) (float64, error) {
 	return v1.Angle(v2)
 }
 
-// Angle returns the angle in radians from the first Vector to the second, the Vector of rotation, and an error if the
-// two Vectors aren't of equal dimensions (length). For 0-dimension Vectors, the angle is 0, and the rotation Vector
-// is empty. For 1-dimension Vectors, the angle is 0 if they both have the same sign, and pi if they don't.
-// The Vector of rotation is, again, empty. For 2-dimension Vectors, the Vector of rotation is a Unit Vector in the Z
-// direction (0, 0, 1).
-func (v Vector) Angle(v2 Vector) (float64, Vector, error) {
+// Angle returns the angle in radians from the first Vector to the second, and an error if the two Vectors
+// aren't of equal dimensions (length). For 0-dimension Vectors, the returned angle is 0. For 1-dimension Vectors,
+// the angle is Pi if the second Vector's coordinate is less than the first Vector's coordinate, and 0 otherwise.
+func (v Vector) Angle(v2 Vector) (float64, error) {
 
 	dim := len(v)
 	dim2 := len(v2)
-	zeroVec := make(Vector, 0)
 
 	if dim != dim2 {
-		return 0, zeroVec, ErrNotSameDimensions
+		return 0, ErrNotSameDimensions
 	}
 
 	if dim == 0 {
-		return 0, zeroVec, nil
+		return 0, nil
 	}
+
 	if dim == 1 {
-		if (v[0] > 0 && v2[0] < 0) || (v[0] < 0 && v2[0] > 0) {
-			return math.Pi, zeroVec, nil
+		if v2[0] < v[0] {
+			return math.Pi, nil
 		}
-		return 0, zeroVec, nil
-	} else if dim == 2 {
-		return (math.Atan2(v2.Y(), v2.X()) - math.Atan2(v.Y(), v.X())), Vector{0, 0, 1}, nil
+		return 0, nil
+	}
+
+	if dim == 2 {
+		return (math.Atan2(v2.Y(), v2.X()) - math.Atan2(v.Y(), v.X())), nil
 	}
 
 	// 3 or more dimensions
 	angle := math.Acos(Dot(v.Clone().Unit(), v2.Clone().Unit()))
-	axis, _ := Cross(v, v2)
-	axis.Unit()
-	return angle, axis, nil
+	return angle, nil
 
 }
 

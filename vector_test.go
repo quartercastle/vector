@@ -245,14 +245,14 @@ func ExampleAngle() {
 	fmt.Println(
 		vector.Angle(vec{1, 0}, vec{0, 1}),
 	)
-	// Output: 1.5707963267948966 [0 0 1] <nil>
+	// Output: 1.5707963267948966 <nil>
 }
 
 func ExampleVector_Angle() {
 	fmt.Println(
 		vec{17, 4, 3}.Angle(vec{-1, 15, 7}),
 	)
-	// Output: 1.351241200672429 [-0.05927484240309407 -0.42538416312808686 0.9030696577883156] <nil>
+	// Output: 1.351241200672429 <nil>
 }
 
 func BenchmarkAdd(b *testing.B) {
@@ -396,6 +396,27 @@ func BenchmarkVector_Rotate(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		v.Rotate(math.Pi / 2)
+	}
+}
+
+func BenchmarkVectorAngle(b *testing.B) {
+	b.ReportAllocs()
+	v := vec{0, 1}
+	v2 := vec{0.7, 0.3}
+
+	for i := 0; i < b.N; i++ {
+		vector.Angle(v, v2)
+	}
+}
+
+func BenchmarkVector_Angle(b *testing.B) {
+	b.ReportAllocs()
+
+	v := vec{0, 4, 3}
+	v2 := vec{0, -4, -3}
+
+	for i := 0; i < b.N; i++ {
+		v.Angle(v2)
 	}
 }
 
