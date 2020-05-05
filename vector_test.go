@@ -255,6 +255,20 @@ func ExampleVector_Angle() {
 	// Output: 1.351241200672429 <nil>
 }
 
+func ExampleInvert() {
+	fmt.Println(
+		vector.Invert(vec{24, 16}),
+	)
+	// Output: [-24 -16]
+}
+
+func ExampleVector_Invert() {
+	fmt.Println(
+		vec{19, 0, 3}.Invert(),
+	)
+	// Output: [-19 -0 -3]
+}
+
 func BenchmarkAdd(b *testing.B) {
 	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{2, 3}
