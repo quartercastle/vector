@@ -161,14 +161,14 @@ func ExampleCross() {
 	fmt.Println(
 		vector.Cross(vec{0, 1, 2}, vec{3, 2, 1}),
 	)
-	// Output: [-3 6 -6] <nil>
+	// Output: [-3 6 -3] <nil>
 }
 
 func ExampleVector_Cross() {
 	fmt.Println(
 		vec{0, 1, 2}.Cross(vec{3, 2, 1}),
 	)
-	// Output: [-3 6 -6] <nil>
+	// Output: [-3 6 -3] <nil>
 }
 
 func ExampleClone() {
@@ -239,6 +239,20 @@ func ExampleVector_Rotate() {
 		vec{1, 0, 0}.Rotate(math.Pi/2, vector.Y),
 	)
 	// Output: [0 0 -1]
+}
+
+func ExampleAngle() {
+	fmt.Println(
+		vector.Angle(vec{1, 0}, vec{0, 1}),
+	)
+	// Output: 1.5707963267948966 <nil>
+}
+
+func ExampleVector_Angle() {
+	fmt.Println(
+		vec{17, 4, 3}.Angle(vec{-1, 15, 7}),
+	)
+	// Output: 1.351241200672429 <nil>
 }
 
 func ExampleInvert() {
@@ -396,6 +410,27 @@ func BenchmarkVector_Rotate(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		v.Rotate(math.Pi / 2)
+	}
+}
+
+func BenchmarkVectorAngle(b *testing.B) {
+	b.ReportAllocs()
+	v := vec{0, 1}
+	v2 := vec{0.7, 0.3}
+
+	for i := 0; i < b.N; i++ {
+		vector.Angle(v, v2)
+	}
+}
+
+func BenchmarkVector_Angle(b *testing.B) {
+	b.ReportAllocs()
+
+	v := vec{0, 4, 3}
+	v2 := vec{0, -4, -3}
+
+	for i := 0; i < b.N; i++ {
+		v.Angle(v2)
 	}
 }
 

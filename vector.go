@@ -25,6 +25,9 @@ var (
 	// ErrNot3Dimensional is an error that is returned in functions that only
 	// supports 3 dimensional vectors
 	ErrNot3Dimensional = errors.New("vector is not 3 dimensional")
+	// ErrNotSameDimensions is an error that is returned when functions need both
+	// Vectors provided to be the same dimensionally
+	ErrNotSameDimensions = errors.New("the two vectors provided aren't the same dimensional size")
 )
 
 // Clone a vector
@@ -195,9 +198,9 @@ func (v Vector) Cross(v2 Vector) (Vector, error) {
 	}
 
 	return Vector{
-		v[Y]*v2[Z] - v[Z]*v2[Y],
-		v[Z]*v2[X] - v[X]*v2[Z],
-		v[X]*v2[Z] - v[Z]*v2[X],
+		v[Y]*v2[Z] - v2[Y]*v[Z],
+		v[Z]*v2[X] - v2[Z]*v[X],
+		v[X]*v2[Y] - v2[X]*v[Y],
 	}, nil
 }
 
@@ -265,6 +268,46 @@ func (v Vector) Rotate(angle float64, as ...Axis) Vector {
 	}
 
 	return v
+}
+
+// Angle returns the angle in radians from the first Vector to the second, and an error if the two Vectors
+// aren't of equal dimensions (length). For 0-dimension Vectors, the returned angle is 0. For 1-dimension Vectors,
+// the angle is Pi if the second Vector's coordinate is less than the first Vector's coordinate, and 0 otherwise.
+func Angle(v1, v2 Vector) (float64, error) {
+	return v1.Angle(v2)
+}
+
+// Angle returns the angle in radians from the first Vector to the second, and an error if the two Vectors
+// aren't of equal dimensions (length). For 0-dimension Vectors, the returned angle is 0. For 1-dimension Vectors,
+// the angle is Pi if the second Vector's coordinate is less than the first Vector's coordinate, and 0 otherwise.
+func (v Vector) Angle(v2 Vector) (float64, error) {
+
+	dim := len(v)
+	dim2 := len(v2)
+
+	if dim != dim2 {
+		return 0, ErrNotSameDimensions
+	}
+
+	if dim == 0 {
+		return 0, nil
+	}
+
+	if dim == 1 {
+		if v2[0] < v[0] {
+			return math.Pi, nil
+		}
+		return 0, nil
+	}
+
+	if dim == 2 {
+		return (math.Atan2(v2.Y(), v2.X()) - math.Atan2(v.Y(), v.X())), nil
+	}
+
+	// 3 or more dimensions
+	angle := math.Acos(Dot(v.Clone().Unit(), v2.Clone().Unit()))
+	return angle, nil
+
 }
 
 // String returns the string representation of a vector
