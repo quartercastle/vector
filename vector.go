@@ -258,7 +258,7 @@ func (v Vector) Rotate(angle float64, as ...Vector) Vector {
 	x, _ := u.Cross(v)
 	d := u.Dot(v)
 
-	v.Add(mul(v, cos), mul(x, sin), mul(mul(u, d), 1-cos))
+	v.Add(v.Scale(cos), x.Scale(sin), u.Scale(d).Scale(1-cos))
 
 	if dim < 3 && axis.Equal(Z) {
 		return v[:2]
@@ -353,10 +353,4 @@ func (v Vector) Z() float64 {
 	}
 
 	return v[z]
-}
-
-// multiply vector with a scalar
-func mul(v Vector, scalar float64) Vector {
-	v[0], v[1], v[2] = scalar*v[0], scalar*v[1], scalar*v[2]
-	return v
 }
