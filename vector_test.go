@@ -58,7 +58,7 @@ func TestRotationOfVector(t *testing.T) {
 
 	result = vec{1, 0}.Rotate(math.Pi/2, vector.Y)
 
-	if result.X() > 1e-8 || result.Y() != 0 || result[vector.Z] != -1 {
+	if result.X() > 1e-8 || result.Y() != 0 || result.Z() != -1 {
 		t.Error("did not upscale to 3-dimensions")
 	}
 
@@ -67,7 +67,6 @@ func TestRotationOfVector(t *testing.T) {
 	if len(result) > 3 {
 		t.Error("did not cut extra dimensions")
 	}
-
 }
 
 func TestXYZGetters(t *testing.T) {
