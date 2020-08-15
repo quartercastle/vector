@@ -10,15 +10,12 @@ import (
 // 64 bit floats
 type Vector []float64
 
-// Axis is an integer enum type that describes vector axis
-type Axis int
-
 const (
 	// the consts below are used to represent vector axis, they are useful
 	// to lookup values within the vector.
-	X Axis = iota
-	Y
-	Z
+	x int = iota
+	y
+	z
 )
 
 var (
@@ -28,6 +25,13 @@ var (
 	// ErrNotSameDimensions is an error that is returned when functions need both
 	// Vectors provided to be the same dimensionally
 	ErrNotSameDimensions = errors.New("the two vectors provided aren't the same dimensional size")
+
+	// X is the vector axis which can be used to rotate another vector around
+	X = Vector{1, 0, 0}
+	// Y is the vector axis which can be used to rotate another vector around
+	Y = Vector{0, 1, 0}
+	// Z is the vector axis which can be used to rotate another vector around
+	Z = Vector{0, 0, 1}
 )
 
 // Clone a vector
@@ -198,73 +202,66 @@ func (v Vector) Cross(v2 Vector) (Vector, error) {
 	}
 
 	return Vector{
-		v[Y]*v2[Z] - v2[Y]*v[Z],
-		v[Z]*v2[X] - v2[Z]*v[X],
-		v[X]*v2[Y] - v2[X]*v[Y],
+		v[y]*v2[z] - v2[y]*v[z],
+		v[z]*v2[x] - v2[z]*v[x],
+		v[x]*v2[y] - v2[x]*v[y],
 	}, nil
 }
 
-// Rotate is rotating a vector around a specified axis.
-// If no axis are specified, it will default to the Z axis.
+// Rotate is rotating a vector around an abitrary vector axis
+// If no axis are specified it will default to rotate around the Z axis
 //
 // If a vector with more than 3-dimensions is rotated, it will cut the extra
 // dimensions and return a 3-dimensional vector.
 //
-// NOTE: the ...Axis is just syntactic sugar that allows the axis to not be
-// specified and default to Z, if multiple axis is passed the first will be
-// set as the rotation axis
-func Rotate(v Vector, angle float64, as ...Axis) Vector {
+// NOTE: the ...Vector is just syntactic sugar that allows the vector axis to not be
+// specified and default to the Z axis, if multiple axis is passed the first will be
+// set as the rotational axis
+func Rotate(v Vector, angle float64, as ...Vector) Vector {
 	return v.Clone().Rotate(angle, as...)
 }
 
-// Rotate is rotating a vector around a specified axis.
-// If no axis are specified, it will default to the Z axis.
+// Rotate is rotating a vector around an abitrary vector axis
+// If no axis are specified it will default to rotate around the Z axis
 //
 // If a vector with more than 3-dimensions is rotated, it will cut the extra
 // dimensions and return a 3-dimensional vector.
 //
-// NOTE: the ...Axis is just syntactic sugar that allows the axis to not be
-// specified and default to Z, if multiple axis is passed the first will be
-// set as the rotation axis
-func (v Vector) Rotate(angle float64, as ...Axis) Vector {
+// NOTE: the ...Vector is just syntactic sugar that allows the vector axis to not be
+// specified and default to the Z axis, if multiple axis is passed the first will be
+// set as the rotational axis
+func (v Vector) Rotate(angle float64, as ...Vector) Vector {
 	axis, dim := Z, len(v)
-
-	if dim == 0 {
-		return v
-	}
 
 	if len(as) > 0 {
 		axis = as[0]
 	}
 
-	if dim == 1 && axis != Z {
-		v = append(v, 0, 0)
-	}
-
-	if (dim < 2 && axis == Z) || (dim == 2 && axis != Z) {
-		v = append(v, 0)
-	}
-
-	x, y := v[X], v[Y]
-
-	cos, sin := math.Cos(angle), math.Sin(angle)
-
-	switch axis {
-	case X:
-		z := v[Z]
-		v[Y] = y*cos - z*sin
-		v[Z] = y*sin + z*cos
-	case Y:
-		z := v[Z]
-		v[X] = x*cos + z*sin
-		v[Z] = -x*sin + z*cos
-	case Z:
-		v[X] = x*cos - y*sin
-		v[Y] = x*sin + y*cos
+	if dim == 0 {
+		return v
 	}
 
 	if dim > 3 {
-		return v[:3]
+		v = v[:3]
+	}
+
+	if l := len(axis); l < 3 {
+		axis = append(axis, make([]float64, 3-l)...)
+	}
+
+	if dim < 3 {
+		v = append(v, make([]float64, 3-dim)...)
+	}
+
+	cos, sin, u := math.Cos(angle), math.Sin(angle), Unit(axis)
+
+	x, _ := u.Cross(v)
+	d := u.Dot(v)
+
+	v.Add(v.Scale(cos), x.Scale(sin), u.Scale(d).Scale(1-cos))
+
+	if dim < 3 && axis.Equal(Z) {
+		return v[:2]
 	}
 
 	return v
@@ -335,7 +332,7 @@ func (v Vector) X() float64 {
 		return 0.
 	}
 
-	return v[X]
+	return v[x]
 }
 
 // Y is corresponding to doing a v[1] lookup, if index 1 does not exist yet, a
@@ -345,7 +342,7 @@ func (v Vector) Y() float64 {
 		return 0.
 	}
 
-	return v[Y]
+	return v[y]
 }
 
 // Z is corresponding to doing a v[2] lookup, if index 2 does not exist yet, a
@@ -355,5 +352,5 @@ func (v Vector) Z() float64 {
 		return 0.
 	}
 
-	return v[Z]
+	return v[z]
 }
