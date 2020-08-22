@@ -46,14 +46,75 @@ func (v Vector) Clone() Vector {
 	return clone
 }
 
-// Add a vector with a vector or a set of vectors
-func Add(v1 Vector, vs ...Vector) Vector {
-	return v1.Clone().Add(vs...)
+func Add(v1, v2 Vector) Vector {
+	return v1.Clone().Add(v2)
 }
 
-// Add a vector with a vector or a set of vectors
-func (v Vector) Add(vs ...Vector) Vector {
+func (v Vector) Add(v2 Vector) Vector {
+	dim1, dim2 := len(v), len(v2)
+
+	if (dim1 == 1 || dim1 == 2 || dim2 == 3) && dim2 == 1 {
+		v[x] += v2[x]
+		return v
+	}
+
+	if dim1 == 2 && dim2 == 2 {
+		v[x], v[y] = v[x]+v2[x], v[y]+v2[y]
+		return v
+	}
+
+	if dim1 == 3 && dim2 == 2 {
+		v[x], v[y] = v[x]+v2[x], v[y]+v2[y]
+		return v
+	}
+
+	if dim1 == 3 && dim2 == 3 {
+		v[x], v[y], v[z] = v[x]+v2[x], v[y]+v2[y], v[z]+v2[z]
+		return v
+	}
+
+	if dim2 > dim1 {
+		axpyUnitaryTo(v, 1, v, v2[:dim1])
+	} else {
+		axpyUnitaryTo(v, 1, v, v2)
+	}
+
+	return v
+}
+
+// Sum a vector with a vector or a set of vectors
+func Sum(v1 Vector, vs ...Vector) Vector {
+	return v1.Clone().Sum(vs...)
+}
+
+// Sum a vector with a vector or a set of vectors
+func (v Vector) Sum(vs ...Vector) Vector {
 	dim := len(v)
+
+	if dim == 2 && len(vs) == 1 && len(vs[0]) == 1 {
+		v[x] += vs[0][x]
+		return v
+	}
+
+	if dim == 2 && len(vs) == 1 && len(vs[0]) == 2 {
+		v[x], v[y] = v[x]+vs[0][x], v[y]+vs[0][y]
+		return v
+	}
+
+	if dim == 3 && len(vs) == 1 && len(vs[0]) == 1 {
+		v[x] += vs[0][x]
+		return v
+	}
+
+	if dim == 3 && len(vs) == 1 && len(vs[0]) == 2 {
+		v[x], v[y] = v[x]+vs[0][x], v[y]+vs[0][y]
+		return v
+	}
+
+	if dim == 3 && len(vs) == 1 && len(vs[0]) == 3 {
+		v[x], v[y], v[z] = v[x]+vs[0][x], v[y]+vs[0][y], v[z]+vs[0][z]
+		return v
+	}
 
 	for i := range vs {
 		if len(vs[i]) > dim {
@@ -67,20 +128,43 @@ func (v Vector) Add(vs ...Vector) Vector {
 }
 
 // Sub subtracts a vector with another vector or a set of vectors
-func Sub(v1 Vector, vs ...Vector) Vector {
-	return v1.Clone().Sub(vs...)
+func Sub(v1 Vector, v2 Vector) Vector {
+	return v1.Clone().Sub(v2)
 }
 
 // Sub subtracts a vector with another vector or a set of vectors
-func (v Vector) Sub(vs ...Vector) Vector {
-	dim := len(v)
+func (v Vector) Sub(v2 Vector) Vector {
+	dim1, dim2 := len(v), len(v2)
 
-	for i := range vs {
-		if len(vs[i]) > dim {
-			axpyUnitaryTo(v, -1, vs[i][:dim], v)
-		} else {
-			axpyUnitaryTo(v, -1, vs[i], v)
-		}
+	if (dim1 == 1 || dim1 == 2 || dim2 == 3) && len(v2) == 1 {
+		v[x] -= v2[x]
+		return v
+	}
+
+	if dim1 == 2 && dim2 == 2 {
+		v[x], v[y] = v[x]-v2[x], v[y]-v2[y]
+		return v
+	}
+
+	if dim1 == 3 && dim2 == 1 {
+		v[x] -= v2[x]
+		return v
+	}
+
+	if dim1 == 3 && dim2 == 2 {
+		v[x], v[y] = v[x]-v2[x], v[y]-v2[y]
+		return v
+	}
+
+	if dim1 == 3 && dim2 == 3 {
+		v[x], v[y], v[z] = v[x]-v2[x], v[y]-v2[y], v[z]-v2[z]
+		return v
+	}
+
+	if dim2 > dim1 {
+		axpyUnitaryTo(v, -1, v2[:dim1], v)
+	} else {
+		axpyUnitaryTo(v, -1, v2, v)
 	}
 
 	return v
@@ -106,6 +190,18 @@ func Scale(v Vector, size float64) Vector {
 
 // Scale vector with a given size
 func (v Vector) Scale(size float64) Vector {
+	dim := len(v)
+
+	if dim == 2 {
+		v[x], v[y] = v[x]*size, v[y]*size
+		return v
+	}
+
+	if dim == 3 {
+		v[x], v[y], v[z] = v[x]*size, v[y]*size, v[z]*size
+		return v
+	}
+
 	scalUnitaryTo(v, size, v)
 	return v
 }
@@ -117,8 +213,17 @@ func Equal(v1, v2 Vector) bool {
 
 // Equal compares that two vectors are equal to each other
 func (v Vector) Equal(v2 Vector) bool {
-	if len(v) != len(v2) {
+	dim := len(v)
+	if dim != len(v2) {
 		return false
+	}
+
+	if dim == 2 {
+		return math.Abs(v[x]-v2[x]) < 1e-8 && math.Abs(v[y]-v2[y]) < 1e-8
+	}
+
+	if dim == 3 {
+		return math.Abs(v[x]-v2[x]) < 1e-8 && math.Abs(v[y]-v2[y]) < 1e-8 && math.Abs(v[z]-v2[z]) < 1e-8
 	}
 
 	for i := range v {
@@ -137,8 +242,21 @@ func Magnitude(v Vector) float64 {
 
 // Magnitude of a vector
 func (v Vector) Magnitude() float64 {
-	var result float64
+	dim := len(v)
 
+	if dim == 1 {
+		return math.Sqrt(v[x] * v[x])
+	}
+
+	if dim == 2 {
+		return math.Sqrt(v[x]*v[x] + v[y]*v[y])
+	}
+
+	if dim == 3 {
+		return math.Sqrt(v[x]*v[x] + v[y]*v[y] + v[z]*v[z])
+	}
+
+	var result float64
 	for _, scalar := range v {
 		result += scalar * scalar
 	}
@@ -153,6 +271,26 @@ func Unit(v Vector) Vector {
 
 // Unit returns a direction vector with the length of one.
 func (v Vector) Unit() Vector {
+	dim := len(v)
+
+	if dim == 2 {
+		l := math.Sqrt(v[x]*v[x] + v[y]*v[y])
+		if l < 1e-8 {
+			return v
+		}
+		v[x], v[y] = v[x]/l, v[y]/l
+		return v
+	}
+
+	if dim == 3 {
+		l := math.Sqrt(v[x]*v[x] + v[y]*v[y] + v[z]*v[z])
+		if l < 1e-8 {
+			return v
+		}
+		v[x], v[y], v[z] = v[x]/l, v[y]/l, v[z]/l
+		return v
+	}
+
 	l := v.Magnitude()
 
 	if l < 1e-8 {
@@ -176,6 +314,14 @@ func Dot(v1, v2 Vector) float64 {
 
 	if dim1 < dim2 {
 		v1 = append(v1, make(Vector, dim2-dim1)...)
+	}
+
+	if dim1 == 2 {
+		return v1[x]*v2[x] + v1[y]*v2[y]
+	}
+
+	if dim1 == 3 {
+		return v1[x]*v2[x] + v1[y]*v2[y] + v1[z]*v2[z]
 	}
 
 	for i := range v1 {
@@ -258,7 +404,7 @@ func (v Vector) Rotate(angle float64, as ...Vector) Vector {
 	x, _ := u.Cross(v)
 	d := u.Dot(v)
 
-	v.Add(v.Scale(cos), x.Scale(sin), u.Scale(d).Scale(1-cos))
+	v.Sum(v.Scale(cos), x.Scale(sin), u.Scale(d).Scale(1-cos))
 
 	if dim < 3 && axis.Equal(Z) {
 		return v[:2]
@@ -278,7 +424,6 @@ func Angle(v1, v2 Vector) (float64, error) {
 // aren't of equal dimensions (length). For 0-dimension Vectors, the returned angle is 0. For 1-dimension Vectors,
 // the angle is Pi if the second Vector's coordinate is less than the first Vector's coordinate, and 0 otherwise.
 func (v Vector) Angle(v2 Vector) (float64, error) {
-
 	dim := len(v)
 	dim2 := len(v2)
 
@@ -291,18 +436,18 @@ func (v Vector) Angle(v2 Vector) (float64, error) {
 	}
 
 	if dim == 1 {
-		if v2[0] < v[0] {
+		if v2[x] < v[x] {
 			return math.Pi, nil
 		}
 		return 0, nil
 	}
 
 	if dim == 2 {
-		return (math.Atan2(v2.Y(), v2.X()) - math.Atan2(v.Y(), v.X())), nil
+		return (math.Atan2(v2[y], v2[x]) - math.Atan2(v[y], v[x])), nil
 	}
 
 	// 3 or more dimensions
-	angle := math.Acos(Dot(v.Clone().Unit(), v2.Clone().Unit()))
+	angle := math.Acos(Dot(Unit(v), Unit(v2)))
 	return angle, nil
 
 }

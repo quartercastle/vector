@@ -18,21 +18,21 @@ func Example() {
 	v3 := vec([]float64{1, 2, 4})
 
 	fmt.Println(
-		v1.Add(v2, v3),
+		v1.Sum(v2, v3),
 	)
 	// Output: [5 4 4]
 }
 
-func ExampleAdd() {
+func ExampleSum() {
 	fmt.Println(
-		vector.Add(vec{0, 2}, vec{1, 4}),
+		vector.Sum(vec{0, 2}, vec{1, 4}),
 	)
 	// Output: [1 6]
 }
 
-func ExampleVector_Add() {
+func ExampleVector_Sum() {
 	fmt.Println(
-		vec{0, 2}.Add(vec{1, 4}),
+		vec{0, 2}.Sum(vec{1, 4}),
 	)
 	// Output: [1 6]
 }

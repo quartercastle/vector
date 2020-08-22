@@ -25,6 +25,24 @@ func BenchmarkVector_Add(b *testing.B) {
 	}
 }
 
+func BenchmarkSum(b *testing.B) {
+	b.ReportAllocs()
+	v1, v2 := vec{1, 2}, vec{2, 3}
+
+	for i := 0; i < b.N; i++ {
+		vector.Sum(v1, v2)
+	}
+}
+
+func BenchmarkVector_Sum(b *testing.B) {
+	b.ReportAllocs()
+	v1, v2 := vec{1, 2}, vec{2, 3}
+
+	for i := 0; i < b.N; i++ {
+		v1.Sum(v2)
+	}
+}
+
 func BenchmarkSub(b *testing.B) {
 	b.ReportAllocs()
 	v1, v2 := vec{1, 2}, vec{2, 3}
@@ -193,7 +211,27 @@ func BenchmarkStructVectorAddition(b *testing.B) {
 		}
 	}
 
-	v1, v2 := vector{}, vector{}
+	v1, v2 := vector{1, 2, 3}, vector{1, 2, 3}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		add(v1, v2)
+	}
+}
+
+func BenchmarkListVectorAddition(b *testing.B) {
+	b.ReportAllocs()
+	type vector []float64
+
+	add := func(v1, v2 vector) vector {
+		return vector{
+			v1[0] + v2[0],
+			v1[1] + v2[1],
+			v1[2] + v2[2],
+		}
+	}
+
+	v1, v2 := vector{1, 2, 3}, vector{1, 2, 3}
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
