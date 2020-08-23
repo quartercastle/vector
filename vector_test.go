@@ -13,7 +13,15 @@ func TestCasting(t *testing.T) {
 	result := vec{1, 2}.Sum([]float64{2, 4})
 
 	if !result.Equal(vec{3, 6}) {
-		t.Errorf("Casting did not work as expected")
+		t.Errorf("casting did not work as expected")
+	}
+}
+
+func TestUnsafeVector(t *testing.T) {
+	result := make(vec, 2)
+	vector.InPlace(result).Sum(vec{1, 2}, vec{1, 2})
+	if result.X() != 2 || result.Y() != 4 {
+		t.Error("UnsafeVector did not work as expected")
 	}
 }
 
@@ -21,7 +29,7 @@ func TestSlicingOfVectors(t *testing.T) {
 	v1 := vec{1, 2, 3}
 	v2 := v1[1:]
 
-	result := vector.Sum(v1, v2)
+	result := v1.Add(v2)
 
 	if result[0] != 3 || result[1] != 5 || result[2] != 3 {
 		t.Error("vector did not get sliced correctly")
