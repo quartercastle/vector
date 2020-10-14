@@ -2,7 +2,7 @@ package vector
 
 type UnsafeVector []float64
 
-func InPlace(a Vector) UnsafeVector {
+func In(a Vector) UnsafeVector {
 	return UnsafeVector(a)
 }
 

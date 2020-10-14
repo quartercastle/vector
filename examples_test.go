@@ -26,7 +26,7 @@ func Example() {
 func ExampleInPlace() {
 	result, v1, v2 := make(vec, 3), vec{2, 1, 3}, vec{4, 12, 6}
 
-	vector.InPlace(result).
+	vector.In(result).
 		Add(v2).
 		Sub(v1)
 

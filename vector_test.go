@@ -19,7 +19,7 @@ func TestCasting(t *testing.T) {
 
 func TestUnsafeVector(t *testing.T) {
 	result := make(vec, 2)
-	vector.InPlace(result).Sum(vec{1, 2}, vec{1, 2})
+	vector.In(result).Sum(vec{1, 2}, vec{1, 2})
 	if result.X() != 2 || result.Y() != 4 {
 		t.Error("UnsafeVector did not work as expected")
 	}
