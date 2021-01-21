@@ -81,7 +81,7 @@ func (a Vector) Rotate(angle float64, axis ...Vector) Vector {
 // aren't of equal dimensions (length). For 0-dimension Vectors, the returned angle is 0. For 1-dimension Vectors,
 // the angle is Pi if the second Vector's coordinate is less than the first Vector's coordinate, and 0 otherwise.
 func (a Vector) Angle(axis ...Vector) float64 {
-	as := Z
+	as := X
 
 	if len(axis) > 0 {
 		as = axis[0]
