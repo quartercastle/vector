@@ -21,8 +21,9 @@ jobs:
     - name: Vet
       run: go vet
 
-    - name: Static check
-      run: staticcheck
+    - uses: dominikh/staticcheck-action@v1.1.0
+      with:
+        version: "2021.1.2"
 
     - name: Test
       run: go test -v ./...
