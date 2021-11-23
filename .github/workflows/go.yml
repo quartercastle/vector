@@ -18,5 +18,11 @@ jobs:
       with:
         go-version: 1.17
 
+    - name: Vet
+      run: go vet
+
+    - name: Static check
+      run: staticcheck
+
     - name: Test
       run: go test -v ./...
