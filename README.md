@@ -1,7 +1,6 @@
 # vector
 
 [![Version](https://img.shields.io/github/release/kvartborg/vector.svg)](https://github.com/kvartborg/vector/releases)
-[![Build Status](https://travis-ci.org/kvartborg/vector.svg?branch=master)](https://travis-ci.org/kvartborg/vector)
 [![GoDoc](https://godoc.org/github.com/kvartborg/vector?status.svg)](https://pkg.go.dev/github.com/kvartborg/vector?tab=doc)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kvartborg/vector)](https://goreportcard.com/report/github.com/kvartborg/vector)
 
@@ -42,7 +41,7 @@ result := vec{1, 2}.Add(vec{2, 4})
 ```
 
 A nice side effect of representing a vector as a list of `float64` values is that
-we easily can turn a slice of `float64` into a vector by using type casting.
+a slice of `float64` values can easily be turned into a vector by using type casting.
 This elimitates the need for any constructor functions for the vector type.
 ```go
 // Turn a list of floats into a vector
@@ -50,39 +49,19 @@ v := vec([]float64{1, 2, 3})
 ```
 
 ### Mutability vs Immutability
-Most of the arithmetic operations provided by this package has a mutable and immutable implementation.
-The way this is separated is that all package level functions are immutable
-and methods called on the vector it self are mutable on the calling vector.
+All arithmetic operations are immutable by default. But if needed a `Vector` can be
+turned into a `MutableVector` with the `vector.In` function, see example below.
+A mutable vector performs arithemetic operations much faster without taking up
+any memory.
 ```go
 // create vectors
 v1, v2 := vec{1, 2}, vec{2, 4}
 
-// Immutable addition, returns a new vector
-result := vector.Add(v1, v2)
+// Immutable addition, will return a new vector containing the result.
+result := v1.Add(v2)
 
 // Mutable addition, will do the calculation in place in the v1 vector
-result := v1.Add(v2)
-```
-
-The mutable implementation is a lot faster and uses less memory compared to the immutable, this is because the calculation is done in place.
-Mutable operations shall be used with care, because it can lead to bugs that can be hard to spot. A use case i find useful is to use the mutable operations when you are inlining the instantiation of the vectors.
-
-```go
-// example of safe usage of mutable operations when inlining vector instantiation.
-result := vec{1, 2}.Add(vec{2, 4})
-```
-
-Or if you are creating a receiving vector where the calculation can be done in place.
-
-```go
-// Create result vector where the calculation can be done in place.
-result := make(vec, 2)
-
-// Create vectors
-v1, v2 := vec{1, 2}, vec{2, 4}
-
-// safe usage of mutable operation when called on a result vector
-result.Add(v1, v2)
+vector.In(v1).Add(v2)
 ```
 
 ### Slicing a vector
