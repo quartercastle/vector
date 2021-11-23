@@ -1,7 +1,6 @@
 # vector
 
 [![Version](https://img.shields.io/github/release/kvartborg/vector.svg)](https://github.com/kvartborg/vector/releases)
-[![Build Status](https://travis-ci.org/kvartborg/vector.svg?branch=master)](https://travis-ci.org/kvartborg/vector)
 [![GoDoc](https://godoc.org/github.com/kvartborg/vector?status.svg)](https://pkg.go.dev/github.com/kvartborg/vector?tab=doc)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kvartborg/vector)](https://goreportcard.com/report/github.com/kvartborg/vector)
 
