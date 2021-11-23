@@ -23,7 +23,7 @@ func Example() {
 	// Output: [5 4 4]
 }
 
-func ExampleInPlace() {
+func ExampleIn() {
 	result, v1, v2 := make(vec, 3), vec{2, 1, 3}, vec{4, 12, 6}
 
 	vector.In(result).
