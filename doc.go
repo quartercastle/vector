@@ -10,6 +10,6 @@
 //		// Create a vector from a list of float64 values
 //		v2 := vec([]float64{2, 6})
 //
-//		// Do operations with the vectors
-//		result := vector.Add(v1, v2)
+//		// Do arithmetic operations with the vectors
+//		result := v1.Add(v2)
 package vector
