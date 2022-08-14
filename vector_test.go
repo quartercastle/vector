@@ -90,3 +90,13 @@ func TestXYZGetters(t *testing.T) {
 		t.Error("getter methods for x, y, z did not return 0 when expected")
 	}
 }
+
+func TestSwizzling(t *testing.T) {
+	v1 := vec{1, 12, 73.2, 99}
+	v2, _ := v1.Swizzle(3, 0, 1, 2)
+
+	if v2[0] != 99 || v2[1] != 1 || v2[2] != 12 || v2[3] != 73.2 {
+		t.Error("swizzling functions did not return values expected")
+	}
+
+}

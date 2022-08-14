@@ -105,3 +105,14 @@ func BenchmarkArithmeticAngle(b *testing.B) {
 		angle(v1, v2)
 	}
 }
+
+func BenchmarkSwizzling(b *testing.B) {
+	b.ReportAllocs()
+
+	v1 := Vector{1, 2, 19}
+
+	for i := 0; i < b.N; i++ {
+		swizzle(v1, 0, 1, 2)
+	}
+
+}

@@ -364,3 +364,43 @@ func angle(a, b []float64) float64 {
 	angle := math.Acos(dot(unit(clone(a)), unit(clone(b))))
 	return angle
 }
+
+func swizzle(a []float64, indices ...int) ([]float64, error) {
+
+	for _, i := range indices {
+		if i < 0 || i >= len(a) {
+			return nil, ErrNotValidSwizzleIndex
+		}
+	}
+
+	switch len(indices) {
+
+	case 0:
+		return []float64{}, nil
+	case 1:
+		return []float64{a[indices[0]]}, nil
+	case 2:
+		return []float64{a[indices[0]], a[indices[1]]}, nil
+	case 3:
+		return []float64{a[indices[0]], a[indices[1]], a[indices[2]]}, nil
+	case 4:
+		return []float64{a[indices[0]], a[indices[1]], a[indices[2]], a[indices[3]]}, nil
+	default:
+
+		vec := make([]float64, len(indices))
+
+		for i := 0; i < len(indices); i++ {
+
+			ind := indices[i]
+			if ind >= len(a) {
+				return nil, ErrNotValidSwizzleIndex
+			}
+			vec[i] = a[ind]
+
+		}
+
+		return vec, nil
+
+	}
+
+}
