@@ -77,6 +77,13 @@ func (a Vector) Rotate(angle float64, axis ...Vector) Vector {
 	return rotate(clone(a), angle, clone(as))
 }
 
+// Swizzle returns a clone of the input vector altered using the provided swizzling indices.
+// For example, with `vector := {1, 3, 9}`, `vector.Swizzle(2,1,2,0)` will return `Vector{9,3,9,1}`.
+// Swizzle will return the swizzled vector, and an error if one of the provided indices is out of bounds.
+func (a Vector) Swizzle(swizzleIndices ...int) (Vector, error) {
+	return swizzle(a, swizzleIndices...)
+}
+
 // Angle returns the angle in radians from the first Vector to the second, and an error if the two Vectors
 // aren't of equal dimensions (length). For 0-dimension Vectors, the returned angle is 0. For 1-dimension Vectors,
 // the angle is Pi if the second Vector's coordinate is less than the first Vector's coordinate, and 0 otherwise.
