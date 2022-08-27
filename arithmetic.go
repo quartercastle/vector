@@ -226,20 +226,20 @@ func unit(a []float64) []float64 {
 func dot(a, b []float64) float64 {
 	result, dimA, dimB := 0., len(a), len(b)
 
+	if dimA == 2 && dimB == 2 {
+		return a[x]*b[x] + a[y]*b[y]
+	}
+
+	if dimA == 3 && dimB == 3 {
+		return a[x]*b[x] + a[y]*b[y] + a[z]*b[z]
+	}
+
 	if dimA > dimB {
 		b = append(b, make(Vector, dimA-dimB)...)
 	}
 
 	if dimA < dimB {
 		a = append(a, make(Vector, dimB-dimA)...)
-	}
-
-	if dimA == 2 {
-		return a[x]*b[x] + a[y]*b[y]
-	}
-
-	if dimA == 3 {
-		return a[x]*b[x] + a[y]*b[y] + a[z]*b[z]
 	}
 
 	for i := range a {
