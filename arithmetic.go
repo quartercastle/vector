@@ -227,11 +227,23 @@ func dot(a, b []float64) float64 {
 	result, dimA, dimB := 0., len(a), len(b)
 
 	if dimA == 2 && dimB == 2 {
-		return a[x]*b[x] + a[y]*b[y]
+		result = a[x]*b[x] + a[y]*b[y]
+		if result > 1 {
+			result = 1
+		} else if result < -1 {
+			result = -1
+		}
+		return result
 	}
 
 	if dimA == 3 && dimB == 3 {
-		return a[x]*b[x] + a[y]*b[y] + a[z]*b[z]
+		result = a[x]*b[x] + a[y]*b[y] + a[z]*b[z]
+		if result > 1 {
+			result = 1
+		} else if result < -1 {
+			result = -1
+		}
+		return result
 	}
 
 	if dimA > dimB {
@@ -244,6 +256,12 @@ func dot(a, b []float64) float64 {
 
 	for i := range a {
 		result += a[i] * b[i]
+	}
+
+	if result > 1 {
+		result = 1
+	} else if result < -1 {
+		result = -1
 	}
 
 	return result

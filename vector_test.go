@@ -100,3 +100,20 @@ func TestSwizzling(t *testing.T) {
 	}
 
 }
+
+func TestDotNaN(t *testing.T) {
+	v1 := vec{1, 0, 0}
+	v2 := vec{0, 1, 0}
+
+	if v1.Dot(v2) != 0 {
+		t.Error("dot function did not return values expected")
+	}
+
+	v1 = vector.Vector{-0.9040721420170615, 0, 0.4273798802338293}
+	v2 = v1.Invert()
+
+	if math.IsNaN(v1.Dot(v2)) {
+		t.Error("dot function returned NaN")
+	}
+
+}
