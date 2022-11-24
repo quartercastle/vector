@@ -7,9 +7,6 @@
 The motivation behind this package is to find a better way to write vector math
 in Golang, there has to be a more expressive way without it getting to verbose.
 
-This is an experiment, there are lots of other libraries tackling vector math as
-well. You should properly take a look at [`gonum`](https://github.com/gonum/gonum) before consider using this package.
-
 ## Install
 ```sh
 go get github.com/quartercastle/vector
