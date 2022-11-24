@@ -1,8 +1,8 @@
 # vector
 
-[![Version](https://img.shields.io/github/release/kvartborg/vector.svg)](https://github.com/kvartborg/vector/releases)
-[![GoDoc](https://godoc.org/github.com/kvartborg/vector?status.svg)](https://pkg.go.dev/github.com/kvartborg/vector?tab=doc)
-[![Go Report Card](https://goreportcard.com/badge/github.com/kvartborg/vector)](https://goreportcard.com/report/github.com/kvartborg/vector)
+[![Version](https://img.shields.io/github/release/quartercastle/vector.svg)](https://github.com/quartercastle/vector/releases)
+[![GoDoc](https://godoc.org/github.com/quartercastle/vector?status.svg)](https://pkg.go.dev/github.com/quartercastle/vector?tab=doc)
+[![Go Report Card](https://goreportcard.com/badge/github.com/quartercastle/vector)](https://goreportcard.com/report/github.com/quartercastle/vector)
 
 The motivation behind this package is to find a better way to write vector math
 in Golang, there has to be a more expressive way without it getting to verbose.
@@ -12,20 +12,22 @@ well. You should properly take a look at [`gonum`](https://github.com/gonum/gonu
 
 ## Install
 ```sh
-go get github.com/kvartborg/vector
+go get github.com/quartercastle/vector
 ```
 
 ## Usage
-Golang does not have a way to define generic types yet, which
-limits this package to operate with vectors represented as `float64` values only.
-To allow for multi-dimensional vectors, a vector is simply represented as
-a list of `float64` values.
 ```go
-// A Vector is simply a list of float64 values
-type Vector []float64
+package main
+
+import "github.com/quartercastle/vector"
+
+type vec = vector.Vector
+
+func main() {
+  a, b := vec{1, 2}, vec{3, 4}
+  c := a.Add(b)
+}
 ```
-> I will consider adding `float32` and `int` support at a later stage,
-  if there is a good reason or when go adds generics to the language.
 
 ### Tackling verbosity
 Another goal of this experiment is to minimize the verbosity around using the package,
@@ -73,7 +75,7 @@ v2 := v1[1:] // returns a new vec{2, 3}
 ```
 
 ## Documentation
-The full documentation of the package can be found on [godoc](https://pkg.go.dev/github.com/kvartborg/vector?tab=doc).
+The full documentation of the package can be found on [godoc](https://pkg.go.dev/github.com/quartercastle/vector?tab=doc).
 
 ## Contributions
 Contributions with common vector operations that are not included in this package are welcome.
@@ -82,4 +84,4 @@ Contributions with common vector operations that are not included in this packag
 Thanks to [`gonum`](https://github.com/gonum/gonum) for inspiration and the following functions [`axpyUnitaryTo`](https://github.com/gonum/gonum/blob/master/internal/asm/f64/axpyunitaryto_amd64.s), [`scalUnitaryTo`](https://github.com/gonum/gonum/blob/c3867503e73e5c3fee7ab93e3c2c562eb2be8178/internal/asm/f64/scalunitaryto_amd64.s) that enhances the performance of arithmetic operations in this package.
 
 ## License
-This project is licensed under the [MIT License](https://github.com/kvartborg/vector/blob/master/LICENSE) and includes [`gonum`](https://github.com/gonum/gonum) code that is licensed under [3-Clause BSD license](https://github.com/gonum/gonum/blob/master/LICENSE).
+This project is licensed under the [MIT License](https://github.com/quartercastle/vector/blob/master/LICENSE) and includes [`gonum`](https://github.com/gonum/gonum) code that is licensed under [3-Clause BSD license](https://github.com/gonum/gonum/blob/master/LICENSE).
